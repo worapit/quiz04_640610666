@@ -2,6 +2,14 @@ export default function withdrawRoute(req, res) {
   if (req.method === "PUT") {
     //check authentication
     //return res.status(403).json({ ok: false, message: "You do not have permission to withdraw" });
+    const user = checkToken(req);
+
+    if (!user || user.isAdmin) {
+      return res.status(403).json({
+        ok: false,
+        message: "You do not have permission to withdraw",
+      });
+    }
 
     const amount = req.body.amount;
     //validate body
